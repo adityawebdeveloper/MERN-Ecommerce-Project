@@ -5,7 +5,10 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-    getProductDetails
+    getProductDetails,
+    createProductReview,
+    getProductReviews,
+    deleteReview
 } = require("../controllers/productController"); // Import the controller function
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -17,16 +20,21 @@ router
 
 
 router
-.route("/products/new")
+.route("/admin/products/new")
 .post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
 
 router
-.route("/products/:id")
+.route("/admin/products/:id")
 .put(isAuthenticatedUser,authorizeRoles("admin"), updateProduct)
 .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct)
-.get(getProductDetails)
 
-module.exports = router
+router.route("/product/:id").get(getProductDetails);
+
+router.route("/review").put(isAuthenticatedUser, createProductReview);
+
+router.route("/reviews").get(getProductReviews).delete(isAuthenticatedUser, deleteReview);
+
+module.exports = router;
 
 
   
